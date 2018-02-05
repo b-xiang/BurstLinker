@@ -41,8 +41,8 @@ struct Cluster {
         for (int i = start; i < end; i++) {
             p = pixels[i];
             int componentColor = p.rgb[component];
-            minCount = min(minCount, componentColor);
-            maxCount = max(maxCount, componentColor);
+            minCount = std::min(minCount, componentColor);
+            maxCount = std::max(maxCount, componentColor);
         }
         return maxCount - minCount;
     }
@@ -62,7 +62,7 @@ struct Cluster {
         if (pixelSize < 2) {
             return false;
         }
-        sort(pixels + start, pixels + end, cmp[componentWithLargestSpread]);
+        std::sort(pixels + start, pixels + end, cmp[componentWithLargestSpread]);
         int medianIndex = (pixelSize + 1) / 2;
         cluster1->setStartAndEnd(start, start + medianIndex);
         cluster2->setStartAndEnd(start + medianIndex, end);
@@ -75,7 +75,8 @@ MedianCutQuantizer::~MedianCutQuantizer() {
     pixels = nullptr;
 }
 
-int32_t MedianCutQuantizer::quantize(uint32_t *originalColors, uint32_t pixelCount, uint32_t maxColorCount) {
+int32_t MedianCutQuantizer::quantize(uint32_t *originalColors, uint32_t pixelCount,
+                                     uint32_t maxColorCount) {
     pixels = new RGB[pixelCount];
     RGB pixel{};
 
@@ -86,7 +87,7 @@ int32_t MedianCutQuantizer::quantize(uint32_t *originalColors, uint32_t pixelCou
         pixels[i] = pixel;
     }
 
-    priority_queue<Cluster> clusters;
+    std::priority_queue<Cluster> clusters;
     Cluster cluster;
     cluster.setStartAndEnd(0, pixelCount);
     clusters.push(cluster);

@@ -10,17 +10,16 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
 
 class GifLogger {
 
 public:
 
-    static void log(bool show, string str);
+    static void log(bool show, std::string str);
 
     template<typename T>
-    static string toString(T value) {
-        ostringstream os;
+    static std::string toString(T value) {
+        std::ostringstream os;
         os << value;
         return os.str();
     }

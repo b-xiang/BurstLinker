@@ -10,9 +10,8 @@
 #ifndef BURSTLINKER_GIFENCODER_H
 #define BURSTLINKER_GIFENCODER_H
 
-using namespace std;
 
-enum QuantizerType {
+enum class QuantizerType {
     Uniform = 0,
     MedianCut = 1,
     KMeans = 2,
@@ -21,8 +20,8 @@ enum QuantizerType {
     NeuQuant = 5
 };
 
-enum DitherType {
-    Disable = 0,
+enum class DitherType {
+    NO = 0,
     M2 = 1,
     Bayer = 2,
     FloydSteinberg = 3
@@ -32,7 +31,7 @@ class GifEncoder {
 
 public:
 
-    ofstream outfile;
+    std::ofstream outfile;
 
     uint16_t screenWidth;
 
@@ -47,14 +46,15 @@ public:
     ~GifEncoder();
 
     bool
-    init(const char *path, uint16_t width, uint16_t height, uint32_t loopCount, uint32_t threadCount);
+    init(const char *path, uint16_t width, uint16_t height, uint32_t loopCount,
+         uint32_t threadCount);
 
-    vector<uint8_t>
+    std::vector<uint8_t>
     addImage(uint32_t *originalColors, uint32_t delay,
              QuantizerType quantizerType, DitherType ditherType,
-             float scale, uint16_t left, uint16_t top, vector<uint8_t> &content);
+             uint16_t left, uint16_t top, std::vector<uint8_t> &content);
 
-    void flush(vector<uint8_t> &content);
+    void flush(std::vector<uint8_t> &content);
 
     void finishEncoding();
 };

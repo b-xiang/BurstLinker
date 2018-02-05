@@ -2,16 +2,14 @@
 // Created by succlz123 on 2017/11/15.
 //
 
-#ifndef BURSTLINKER_DISABLEDITHERER_H
-#define BURSTLINKER_DISABLEDITHERER_H
+#ifndef BURSTLINKER_NODITHERER_H
+#define BURSTLINKER_NODITHERER_H
 
 
 #include "Ditherer.h"
 
-using namespace std;
 
-
-class DisableDitherer : public Ditherer {
+class NoDitherer : public Ditherer {
 
 public:
 
@@ -21,4 +19,4 @@ public:
 
 };
 
-#endif //BURSTLINKER_DISABLEDITHERER_H
+#endif //BURSTLINKER_NODITHERER_H

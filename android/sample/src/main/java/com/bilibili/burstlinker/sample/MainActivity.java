@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
         String dstFile = "result.gif";
         mFilePath = getExternalCacheDir() + File.separator + dstFile;
 
-        textView.setOnClickListener(v -> new Thread(() -> {
-            encodeGIF();
-        }).start());
+        textView.setOnClickListener(v -> new Thread(this::encodeGIF).start());
     }
 
     private void encodeGIF() {
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         int size = 0;
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        final int delayMs = 100;
+        final int delayMs = 1000;
         final BurstLinker burstLinker = new BurstLinker();
 
         Exception exception = null;
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 bitmaps.add(bitmap);
                 size = bitmaps.size();
                 burstLinker.connectArray(bitmaps, BurstLinker.OCTREE_QUANTIZER,
-                        BurstLinker.DISABLE_DITHER, 0, 0, delayMs);
+                        BurstLinker.BAYER_DITHER, 0, 0, delayMs);
             } else {
                 Bitmap colorBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(colorBitmap);
@@ -83,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     canvas.drawRect(0, 0, width, height, p);
                     size++;
                     burstLinker.connect(colorBitmap, BurstLinker.OCTREE_QUANTIZER,
-                            BurstLinker.DISABLE_DITHER, 0, 0, delayMs);
+                            BurstLinker.NO_DITHER, 0, 0, delayMs);
                 }
             }
         } catch (GifEncodeException e) {

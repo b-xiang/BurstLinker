@@ -17,7 +17,7 @@ set(SOURCE_FILES
         GifLogger.cpp GifLogger.h
 
         Ditherer.cpp Ditherer.h
-        DisableDitherer.cpp DisableDitherer.h
+        NoDitherer.cpp NoDitherer.h
         BayerDitherer.cpp BayerDitherer.h
         M2Ditherer.cpp M2Ditherer.h
         FloydSteinbergDitherer.cpp FloydSteinbergDitherer.h

@@ -4,7 +4,7 @@
 
 Idea from: [square/gifencoder](https://github.com/square/gifencoder)
 
-BurstLinker is a simple and fast C++ GIF encode library. You can easily use it on Android, Windows, Linux or other platforms.
+BurstLinker is a simple C++ GIF encode library. You can easily use it on Android, Windows, Linux or other platforms.
 
 ## Android platform
 
@@ -13,7 +13,7 @@ BurstLinker is a simple and fast C++ GIF encode library. You can easily use it o
 Gradle:
 
 ```
-implementation 'com.bilibili:burst-linker:0.0.1'
+implementation 'com.bilibili:burst-linker:last-version'
 ```
 
 ### Build Environment
@@ -25,7 +25,7 @@ NDK r16
 ### Basic usage
 
 ``` java
-int delayMs = 100;
+int delayMs = 1000;
 String filePath = getExternalCacheDir() + File.separator + "out.gif";
 BurstLinker burstLinker = new BurstLinker();
 
@@ -39,7 +39,7 @@ try {
         p.setColor(color);
         canvas.drawRect(0, 0, width, height, p);
         burstLinker.connect(colorBitmap, BurstLinker.OCTREE_QUANTIZER, 
-                BurstLinker.DISABLE_DITHER, 0, 0, delayMs);
+                BurstLinker.NO_DITHER, 0, 0, delayMs);
     }
 } catch (GifEncodeException e) {
     e.printStackTrace();
@@ -72,7 +72,7 @@ try {
    - `make`
 
 3. Run
-   - `./BurstLinker 100 1.jpg 2.jpg 3.jpg` 
+   - `./BurstLinker 1000 1.jpg 2.jpg 3.jpg` 
    - See out.gif
 
 ## Windows platform
@@ -88,7 +88,7 @@ try {
 
 3. Run
    - `cd Debug`
-   - `BurstLinker.exe 100 1.jpg 2.jpg 3.jpg` 
+   - `BurstLinker.exe 1000 1.jpg 2.jpg 3.jpg` 
    - See out.gif
 
 # Thanks

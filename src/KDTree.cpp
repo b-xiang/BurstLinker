@@ -6,7 +6,6 @@
 #include <math.h>
 #include <time.h>
 #include <iostream>
-#include <cassert>
 #include <algorithm>
 #include "KDTree.h"
 
@@ -16,22 +15,18 @@ using namespace std;
 // int distance = nr * nr + ng * ng + nb * nb;
 // manhattanDistance
 // int distance = abs(nr) + abs(ng) + abs(nb);
-static int calculateDist(KDTree::Node *node, const int *target) {
+inline int calculateDist(KDTree::Node *node, const int *target) {
     int tmp = 0;
-    for (int i = 0; i < 3; i++) {
-        int diff = node->data[i] - target[i];
-        if (i == 0) {
-            tmp += 2 * diff * diff;
-        } else if (i == 1) {
-            tmp += 4 * diff * diff;
-        } else {
-            tmp += 3 * diff * diff;
-        }
-    }
+    int diff = node->data[0] - target[0];
+    tmp += (diff * diff) << 1;
+    diff = node->data[1] - target[1];
+    tmp += (diff * diff) << 2;
+    diff = node->data[2] - target[2];
+    tmp += (diff * diff) * 3;
     return tmp;
 }
 
-static int getDimension(int *data[], int dataSize) {
+inline int getDimension(int *data[], int dataSize) {
     if (dataSize == 0) {
         return 0;
     }

@@ -34,6 +34,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    burstLinkerVer = '0.0.1'
+    burstLinkerVer = '0.0.2'
     libs = ['burstLinkerVer': "com.bilibili:$burstLinkerVer"]
 }

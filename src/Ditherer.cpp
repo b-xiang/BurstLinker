@@ -4,7 +4,6 @@
 
 #include "Ditherer.h"
 
-using namespace std;
 
 Ditherer::~Ditherer() {
     delete[] colorIndices;

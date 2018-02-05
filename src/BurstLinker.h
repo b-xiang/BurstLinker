@@ -20,11 +20,11 @@ public:
 
     bool connect(uint32_t *imagePixels, uint32_t delay,
                  QuantizerType quantizerType, DitherType ditherType,
-                 float scale, uint16_t left, uint16_t top);
+                 uint16_t left, uint16_t top);
 
-    bool connect(vector<uint32_t *> imagePixels, uint32_t delay,
+    bool connect(std::vector<uint32_t *> imagePixels, uint32_t delay,
                  QuantizerType quantizerType, DitherType ditherType,
-                 float scale, uint16_t left, uint16_t top);
+                 uint16_t left, uint16_t top);
 
     void release();
 

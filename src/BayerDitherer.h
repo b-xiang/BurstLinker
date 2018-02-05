@@ -9,8 +9,6 @@
 #include <vector>
 #include "Ditherer.h"
 
-using namespace std;
-
 
 class BayerDitherer : public Ditherer {
 

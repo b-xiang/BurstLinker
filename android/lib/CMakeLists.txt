@@ -41,7 +41,7 @@ add_library( # Sets the name of the library.
              ../../src/GifLogger.cpp
 
              ../../src/Ditherer.cpp
-             ../../src/DisableDitherer.cpp
+             ../../src/NoDitherer.cpp
              ../../src/BayerDitherer.cpp
              ../../src/M2Ditherer.cpp
              ../../src/FloydSteinbergDitherer.cpp

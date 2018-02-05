@@ -20,7 +20,7 @@ void BayerDitherer::dither(uint32_t *originalColors, int width, int height,
         bayer[i] = (bayerDitherValue(i) >> 1) - delta;
     }
 
-//    if (quantizerType == Octree) {
+//    if (quantizerType == QuantizerType::Octree) {
 //        auto getOffset = [](int x, int y) { return bayer[((y & 7) << 3) | (x & 7)]; };
 //        static_cast<OctreeQuantizer *>(colorQuantizer)->getColorIndices(originalColors, colorIndices, width * height,
 //                                                                        getOffset);

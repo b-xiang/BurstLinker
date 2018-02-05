@@ -18,7 +18,7 @@
 #include "UniformQuantizer.h"
 #include "NeuQuantQuantizer.h"
 #include "M2Ditherer.h"
-#include "DisableDitherer.h"
+#include "NoDitherer.h"
 
 using namespace std;
 
@@ -83,84 +83,49 @@ bool GifEncoder::init(const char *path, uint16_t width, uint16_t height, uint32_
 
 vector<uint8_t> GifEncoder::addImage(uint32_t *originalColors, uint32_t delay,
                                      QuantizerType quantizerType, DitherType ditherType,
-                                     float scale, uint16_t left, uint16_t top,
+                                     uint16_t left, uint16_t top,
                                      vector<uint8_t> &content) {
     GifLogger::log(debugLog, "Get image pixel");
 
     ColorQuantizer *colorQuantizer = nullptr;
     string quantizerStr;
     switch (quantizerType) {
-        case Uniform:
+        case QuantizerType::Uniform:
         default:
             colorQuantizer = new UniformQuantizer();
             quantizerStr = "UniformQuantizer";
             break;
-        case MedianCut:
+        case QuantizerType::MedianCut:
             colorQuantizer = new MedianCutQuantizer();
             quantizerStr = "MedianCutQuantizer";
             break;
-        case KMeans:
+        case QuantizerType::KMeans:
             colorQuantizer = new KMeansQuantizer();
             quantizerStr = "KMeansQuantizer";
             break;
-        case Random:
+        case QuantizerType::Random:
             colorQuantizer = new RandomQuantizer();
             quantizerStr = "RandomQuantizer";
             break;
-        case Octree:
+        case QuantizerType::Octree:
             colorQuantizer = new OctreeQuantizer();
             quantizerStr = "OctreeQuantizer";
             break;
-        case NeuQuant:
+        case QuantizerType::NeuQuant:
             colorQuantizer = new NeuQuantQuantizer();
             quantizerStr = "NeuQuantQuantizer";
             break;
     }
 
-    uint32_t srcWidth;
-    uint32_t srcHeight;
-    uint32_t processSize = 0;
-    uint32_t *processColor = nullptr;
-    if (scale <= 0 || scale > 1.0f) {
-        scale = 1.0f;
-    }
-    if (scale != 1.0f) {
-        srcWidth = static_cast<uint32_t>(screenWidth * scale);
-        srcHeight = static_cast<uint32_t>(screenHeight * scale);
-
-        uint32_t xr = (srcWidth << 16) / screenWidth + 1;
-        uint32_t yr = (srcHeight << 16) / screenHeight + 1;
-
-        processSize = srcWidth * srcHeight;
-        processColor = new uint32_t[processSize];
-
-        for (uint16_t y = 0; y < srcHeight; ++y) {
-            for (uint16_t x = 0; x < srcWidth; ++x) {
-                uint32_t srcX = (x * xr) >> 16;
-                uint32_t srcY = (y * yr) >> 16;
-                processColor[y * srcWidth + x] = originalColors[srcY * screenHeight + srcX];
-            }
-        }
-        GifLogger::log(debugLog, "Scale");
-    } else {
-        srcWidth = screenWidth;
-        srcHeight = screenHeight;
-        processSize = 0;
-    }
-
-    colorQuantizer->width = srcWidth;
-    colorQuantizer->height = srcHeight;
+    colorQuantizer->width = screenWidth;
+    colorQuantizer->height = screenHeight;
 
     size_t colorSize = screenWidth * screenHeight;
 
     uint8_t *quantizerColors = nullptr;
     int32_t quantizerSize = 0;
     if (colorSize > 256) {
-        if (processSize > 256) {
-            quantizerSize = colorQuantizer->quantize(processColor, processSize, 256);
-        } else {
-            quantizerSize = colorQuantizer->quantize(originalColors, colorSize, 256);
-        }
+        quantizerSize = colorQuantizer->quantize(originalColors, colorSize, 256);
         quantizerColors = new uint8_t[(quantizerSize + 1) * 3];
         colorQuantizer->getColorPalette(quantizerColors);
     } else {
@@ -199,22 +164,22 @@ vector<uint8_t> GifEncoder::addImage(uint32_t *originalColors, uint32_t delay,
 
 #if defined(__Android__)
     switch (ditherType) {
-        case Disable:
+        case DitherType::NO:
         default:
             if (useRenderScript) {
                 ditherer = new DisableDithererWithRs();
                 dithererStr = "DisableDithererWithRs";
             } else {
-                ditherer = new DisableDitherer();
-                dithererStr = "DisableDitherer";
+                ditherer = new NoDitherer();
+                dithererStr = "NoDitherer";
             }
             break;
-        case M2:
+        case DitherType::M2:
             useRenderScript = false;
             ditherer = new M2Ditherer();
             dithererStr = "M2Ditherer";
             break;
-        case Bayer:
+        case DitherType::Bayer:
             if (useRenderScript) {
                 ditherer = new BayerDithererWithRs();
                 dithererStr = "BayerDithererWithRs";
@@ -223,7 +188,7 @@ vector<uint8_t> GifEncoder::addImage(uint32_t *originalColors, uint32_t delay,
                 dithererStr = "BayerDitherer";
             }
             break;
-        case FloydSteinberg:
+        case DitherType::FloydSteinberg:
             useRenderScript = false;
             ditherer = new FloydSteinbergDitherer();
             dithererStr = "FloydSteinbergDitherer";
@@ -232,19 +197,19 @@ vector<uint8_t> GifEncoder::addImage(uint32_t *originalColors, uint32_t delay,
 #elif defined(__Other__)
     switch (ditherType) {
         default:
-        case Disable:
-            ditherer = new DisableDitherer();
-            dithererStr = "DisableDitherer";
+        case DitherType::NO:
+            ditherer = new NoDitherer();
+            dithererStr = "NoDitherer";
             break;
-        case M2:
+        case DitherType::M2:
             ditherer = new M2Ditherer();
             dithererStr = "M2Ditherer";
             break;
-        case Bayer:
+        case DitherType::Bayer:
             ditherer = new BayerDitherer();
             dithererStr = "BayerDitherer";
             break;
-        case FloydSteinberg:
+        case DitherType::FloydSteinberg:
             ditherer = new FloydSteinbergDitherer();
             dithererStr = "FloydSteinbergDitherer";
             break;
@@ -278,7 +243,7 @@ vector<uint8_t> GifEncoder::addImage(uint32_t *originalColors, uint32_t delay,
 //    int32_t paddedColorCount = GifBlockWriter::paddedSize(quantizerSize);
     int32_t paddedColorCount = 256;
 
-    GifBlockWriter::writeGraphicsControlExtensionBlock(content, 0, false, false, delay, 0);
+    GifBlockWriter::writeGraphicsControlExtensionBlock(content, 0, false, false, delay / 10, 0);
     GifBlockWriter::writeImageDescriptorBlock(content, left, top, screenWidth, screenHeight, true,
                                               false,
                                               false,

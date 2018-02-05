@@ -193,9 +193,9 @@ OctreeQuantizer::getColorIndices(uint32_t *originalColors, uint32_t *out, int si
         int r = color & 0xFF;
         if (getOffset) {
             int offset = getOffset(j, color);
-            r = (min(255, max(0, r + offset)));
-            g = (min(255, max(0, g + offset)));
-            b = (min(255, max(0, b + offset)));
+            r = (std::min(255, std::max(0, r + offset)));
+            g = (std::min(255, std::max(0, g + offset)));
+            b = (std::min(255, std::max(0, b + offset)));
         }
         if (!(lastR == r && lastG == g && lastB == b)) {
             lastR = r;

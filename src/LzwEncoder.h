@@ -10,7 +10,6 @@
 #include <list>
 #include <vector>
 
-using namespace std;
 
 class LzwEncoder {
 
@@ -20,13 +19,13 @@ public:
 
     ~LzwEncoder();
 
-    void encode(uint32_t indices[], int width, int height, int size, char out[], vector<uint8_t> &content);
+    void encode(uint32_t indices[], int width, int height, int size, char out[], std::vector<uint8_t> &content);
 
 private:
 
     static const int32_t BLOCK_SIZE = 255;
 
-    list<uint8_t *> datas;
+    std::list<uint8_t *> datas;
 
     uint8_t *current;
 
@@ -38,7 +37,7 @@ private:
 
     void writeBits(uint32_t src, int32_t bit);
 
-    int write(vector<uint8_t> &content, uint8_t minimumCodeSize);
+    int write(std::vector<uint8_t> &content, uint8_t minimumCodeSize);
 };
 
 

@@ -20,7 +20,7 @@ void M2Ditherer::dither(uint32_t *originalColors, int width, int height,
                         uint8_t *quantizerColors, int quantizerSize) {
     colorIndices = new uint32_t[width * height];
 
-//    if (quantizerType == Octree) {
+//    if (quantizerType == QuantizerType::Octree) {
 //        auto getOffset = [](int x, int y) { return (matrix4x4[(x & 3)][y & 3]); };
 //        static_cast<OctreeQuantizer *>(colorQuantizer)->getColorIndices(originalColors, colorIndices, width * height,
 //                                                                        getOffset);

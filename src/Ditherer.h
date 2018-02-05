@@ -9,12 +9,6 @@
 #include "ColorQuantizer.h"
 #include "GifEncoder.h"
 
-#if defined(__Android__)
-
-#include <RenderScript.h>
-
-using namespace android::RSC;
-#endif
 
 class Ditherer {
 

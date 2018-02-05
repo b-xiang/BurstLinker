@@ -3,15 +3,18 @@
 //
 
 #include <algorithm>
-#include "DisableDitherer.h"
+#include "NoDitherer.h"
 #include "OctreeQuantizer.h"
 #include "KDTree.h"
 
 void
-DisableDitherer::dither(uint32_t *originalColors, int width, int height, uint8_t *quantizerColors, int quantizerSize) {
+NoDitherer::dither(uint32_t *originalColors, int width, int height, uint8_t *quantizerColors,
+                        int quantizerSize) {
     colorIndices = new uint32_t[width * height];
-    if (quantizerType == Octree) {
-        static_cast<OctreeQuantizer *>(colorQuantizer)->getColorIndices(originalColors, colorIndices, width * height, nullptr);
+    if (quantizerType == QuantizerType::Octree) {
+        static_cast<OctreeQuantizer *>(colorQuantizer)->getColorIndices(originalColors,
+                                                                        colorIndices,
+                                                                        width * height, nullptr);
         return;
     }
 

@@ -8,7 +8,6 @@
 #include <set>
 #include <cstdint>
 
-using namespace std;
 
 class ColorQuantizer {
 
