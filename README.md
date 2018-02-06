@@ -13,7 +13,7 @@ BurstLinker is a simple C++ GIF encode library. You can easily use it on Android
 Gradle:
 
 ```
-implementation 'com.bilibili:burst-linker:last-version'
+implementation 'com.bilibili:burst-linker:latest-version'
 ```
 
 ### Build Environment

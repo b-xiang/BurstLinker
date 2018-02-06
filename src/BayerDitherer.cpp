@@ -43,10 +43,11 @@ void BayerDitherer::dither(uint32_t *originalColors, int width, int height,
     int lastG = 256;
     int lastB = 256;
     int lastIndex = 0;
+    int position = 0;
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            int position = y * width + x;
             uint32_t rgb = originalColors[position];
+            position++;
             int b = (rgb >> 16) & 0xFF;
             int g = (rgb >> 8) & 0xFF;
             int r = (rgb) & 0xFF;

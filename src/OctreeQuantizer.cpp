@@ -159,10 +159,11 @@ OctreeQuantizer::quantize(uint32_t *originalColors, uint32_t pixelCount, uint32_
     }
     leafCount = 0;
     Node *node = nullptr;
+    int position = 0;
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            int position = y * width + x;
             uint32_t color = originalColors[position];
+            position++;
             uint32_t b = color >> 16 & 0xFF;
             uint32_t g = color >> 8 & 0xFF;
             uint32_t r = color & 0xFF;
